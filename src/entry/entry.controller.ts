@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { EntryService } from './entry.service';
 import { Entry } from './entry.model';
-import { TrackingService } from 'src/tracking/tracking.service';
-import { AppService } from 'src/app.service';
-import { IEntry } from 'src/interfaces/IEntry';
-import { IResponse } from 'src/interfaces/IResponse';
+import { TrackingService } from '../tracking/tracking.service';
+import { AppService } from '../app.service';
+import { IEntry } from '../interfaces/IEntry';
+import { IResponse } from '../interfaces/IResponse';
 
 @Controller('entry')
 export class EntryController {
@@ -75,6 +75,7 @@ export class EntryController {
     }
 
     /**
+     * Filters the entries to those with less than or equal to 5 words ordered by points DESC
      * An improvement would be for this function to be able to sort by any type of field not just comments and to be able to specify the ordering fiedl and direction aswell
      * @returns Entry[] filtered by title length less than or equal to :num and ordered DESC
      */
@@ -108,6 +109,7 @@ export class EntryController {
     }
 
     /**
+     * Filters the entries to those with more than 5 words ordered by comments DESC
      * An improvement would be for this function to be able to sort by any type of field not just comments and to be able to specify the ordering fiedl and direction aswell
      * @returns Entry[] filtered by title length greater than :num and ordered DESC
      */
@@ -145,7 +147,7 @@ export class EntryController {
      * @param text Text to be cleanes
      * @returns the text cleaned or null
      */
-    private cleanText(text: string | undefined): string | null{
+    cleanText(text: string | undefined): string | null{
         if(text){
             //Replace all special characters and underscores from the beginning of the string
             // let cleanedText = text.replaceAll(/^\W+|^\_/g, " ");
@@ -163,7 +165,7 @@ export class EntryController {
     }
 
 
-    private processTitle(entry: Entry): number{
+    processTitle(entry: Entry): number{
         return this.cleanText(Object.assign({},entry)?.dataValues?.title)?.trim().split(' ').length;
     }
 }
