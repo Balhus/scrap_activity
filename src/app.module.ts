@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppService } from './app.service';
 import { EntryModule } from './entry/entry.module';
 import { env } from 'process';
+import { TrackingModule } from './tracking/tracking.module';
+import { TrackingService } from './tracking/tracking.service';
+import { IResponse } from './interfaces/IResponse';
 
 @Module({
   imports: [
@@ -19,9 +22,10 @@ import { env } from 'process';
       autoLoadModels: true,
       synchronize: true,
     }),
-    EntryModule
+    EntryModule,
+    TrackingModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

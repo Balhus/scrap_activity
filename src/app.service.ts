@@ -2,19 +2,21 @@ import { Injectable } from '@nestjs/common';
 import {chromium, Browser, Page} from 'playwright';
 import { Entry } from './entry/entry.model';
 import { IEntry } from './interfaces/IEntry';
-import { first } from 'rxjs';
 
 @Injectable()
 export class AppService {
   //Variables
-  url: string;
-
+  private url: string;
 
   //Functions
   setUrl(url: string){
     this.url = url;
   }
 
+  /**
+   * Creates a Page and Browser with the url provided
+   * @returns Page and Browser to do the scraping
+   */
   async getScrappingData(): Promise<{page: Page, browser: Browser}>{
     const browser: Browser = await chromium.launch({
       headless:true
@@ -28,6 +30,10 @@ export class AppService {
     return { page, browser };
   }
 
+  /**
+   * Scraps for the required data of the entries
+   * @returns IEntry interface with all the entries scraped
+   */
   async getEntries(): Promise<IEntry[]>{
     //Getting the Page
     const {page, browser}:{page: Page, browser: Browser} = await this.getScrappingData();
