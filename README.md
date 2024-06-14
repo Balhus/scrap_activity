@@ -50,8 +50,6 @@ The 'scrap_activity' project is a web crawler built with NestJS and Sequelize us
 
 ## Getting Started
 
-Try it on Vercel on: https://scrap-activity.vercel.app
-
 ### Prerequisites
 
 - Node.js (v20.x or higher)
@@ -61,10 +59,10 @@ Try it on Vercel on: https://scrap-activity.vercel.app
 
 1. **Clone the repository:**
 
-   ```bash
-   $ git clone https://github.com/Balhus/scrap_activity.git
-   $ cd scrap_activity
-   ```
+  ```bash
+  $ git clone https://github.com/Balhus/scrap_activity.git
+  $ cd scrap_activity
+  ```
 
 2. **Install dependencies:**
   ```bash

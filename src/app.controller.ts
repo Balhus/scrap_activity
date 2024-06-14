@@ -11,6 +11,12 @@ export class AppController {
     private readonly trackingService: TrackingService
   ) {}
 
+  @Get('/')
+  async welcome(): Promise<string>{
+
+    return "Welcome to the web crawler";
+  }
+
   /**
    * Gets the entries from the url
    * @returns Returns a response containing the scraped data if succesful, error and error message otherwise
