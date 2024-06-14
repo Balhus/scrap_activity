@@ -1,73 +1,136 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# scrap_activity
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The 'scrap_activity' project is a web crawler built with NestJS and Sequelize using TypeScript. It fetches entries from 'https://news.ycombinator.com/' and stores them in a MySQL database hosted on AWS RDS. These entries can be filtered based on title length and ordered by points or number of comments.
 
-## Description
+## Endpoints
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1. Scrap Entries
 
-## Installation
+- **Endpoint:** `/scrap`
+- **Description:** Scrapes the web and returns the entries from 'https://news.ycombinator.com/'.
 
-```bash
-$ npm install
-```
+### 2. Update or Insert Entry
 
-## Running the app
+- **Endpoint:** `/entry/scrap/update`
+- **Description:** Scrapes entries and saves them into the database. Updates an entry if it already exists (title is unique).
 
-```bash
-# development
-$ npm run start
+### 3. Find All Entries
 
-# watch mode
-$ npm run start:dev
+- **Endpoint:** `/entry/findAll`
+- **Description:** Retrieves all entries from the database, ordered by `updatedAt` DESC.
 
-# production mode
-$ npm run start:prod
-```
+### 4. Filter Entries by Title Word Count and Points
+
+- **Endpoint:** `/entry/filter/less/:num/points`
+- **Description:** Filters entries with a title containing less than or equal to `:num` words (special characters not counted as words), ordered by `points` DESC.
+
+### 5. Filter Entries by Title Word Count and Comments
+
+- **Endpoint:** `/entry/filter/more/:num/comments`
+- **Description:** Filters entries with a title containing more than `:num` words (special characters not counted as words), ordered by `num_comments` DESC.
+
+## Request Tracking
+
+- **Implementation:** Every endpoint logs a tracking entry in the database with fields:
+  - `request_timestamp`: Timestamp of the request.
+  - `action`: Endpoint URL.
+  - `request_status`: Success or failure of the request.
+  - `request_message`: Additional message related to the request.
+
+## Database Schema (Entry)
+- `id`: Id of each entry.
+- `position`: Position of the entry.
+- `title`: Title of the entry.
+- `points`: Points associated with the entry.
+- `num_comments`: Number of comments on the entry.
+- `createdAt`: Timestamp of creation.
+- `updatedAt`: Timestamp of last update.
+
+## Getting Started
+
+Try it on Vercel on: 
+
+### Prerequisites
+
+- Node.js (v20.x or higher)
+- MySQL database (can be AWS RDS or local instance)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   $ git clone https://github.com/Balhus/scrap_activity.git
+   $ cd scrap_activity
+   ```
+
+2. **Install dependencies:**
+  ```bash
+  $ npm install
+  ```
+
+3. **Enviroment Variables:**
+  Create a .env file in the root directory with the following variables:
+
+  ```bash
+  DB_HOST=your_database_host
+  DB_PORT=your_database_port
+  DB_USERNAME=your_database_username
+  DB_PASSWORD=your_database_password
+  DB_DATABASE=your_database_name
+
+  ```
+
+5. **Start the application:**
+  ```bash
+  $ npm run start 
+
+  # or watch mode
+  $ npm run start:dev
+  ```
+
+6. **Access de crawler:**
+The crawler will be available at http://localhost:3000.
+
+
+
+## Usage Example
+
+### Scrap Entries
+  ```bash
+    # GET 
+    http://localhost:3000/scrap
+  ```
+### Update or Insert Entries
+  ```bash
+    # POST 
+    http://localhost:3000/entry/scrap/update
+  ```
+### Find All Entries
+  ```bash
+    # GET 
+    http://localhost:3000/entry/findAll
+  ```
+
+### Filter Entries by Title Word Count and Points
+  ```bash
+    # GET 
+    http://localhost:3000/entry/filter/less/5/points
+  ```
+
+### Filter Entries by Title Word Count and Comments
+  ```bash
+    # GET 
+    http://localhost:3000/entry/filter/more/10/comments
+  ```
 
 ## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  ```bash
+  # unit tests
+  $ npm run test
+  ```
 
 ## License
-
-Nest is [MIT licensed](LICENSE).
+[MIT licensed].

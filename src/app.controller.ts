@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { IEntry } from './interfaces/IEntry';
 import { TrackingService } from './tracking/tracking.service';
-import { IResponse } from './interfaces/iResponse';
+import { IResponse } from './interfaces/IResponse';
 
 @Controller()
 export class AppController {
