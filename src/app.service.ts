@@ -17,7 +17,7 @@ export class AppService {
    * Creates a Page and Browser with the url provided
    * @returns Page and Browser to do the scraping
    */
-  async getScrappingData(): Promise<{page: Page, browser: Browser}>{
+  async getPageAndBrowser(): Promise<{page: Page, browser: Browser}>{
     const browser: Browser = await chromium.launch({
       headless:true
     });
@@ -36,7 +36,7 @@ export class AppService {
    */
   async getEntries(): Promise<IEntry[]>{
     //Getting the Page
-    const {page, browser}:{page: Page, browser: Browser} = await this.getScrappingData();
+    const {page, browser}:{page: Page, browser: Browser} = await this.getPageAndBrowser();
 
     //Scrapping entries from the given page
     const entries: IEntry[] = await page.evaluate(() => {

@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { IEntry } from './interfaces/IEntry';
 import { TrackingService } from './tracking/tracking.service';
-import { IResponse } from './interfaces/iResponse';
+import { IResponse } from './interfaces/IResponse';
 
 @Controller()
 export class AppController {
@@ -16,7 +16,7 @@ export class AppController {
    * @returns Returns a response containing the scraped data if succesful, error and error message otherwise
    */
   @Get('/scrap')
-  async getScrappingData(): Promise<IResponse>{
+  async getScrapingData(): Promise<IResponse>{
     let response: IResponse;
 
     try{
