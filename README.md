@@ -50,8 +50,6 @@ The 'scrap_activity' project is a web crawler built with NestJS and Sequelize us
 
 ## Getting Started
 
-Try it on Vercel on: https://scrap-activity-onbcoyd8b-balhus-projects.vercel.app
-
 ### Prerequisites
 
 - Node.js (v20.x or higher)
